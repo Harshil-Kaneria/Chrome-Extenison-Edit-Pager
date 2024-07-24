@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.main_body{
+    max-width: 350px;
+    min-width: 350px;
+    width: 350px;
+}
