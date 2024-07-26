@@ -1,6 +1,6 @@
 {
     "name": "Edit Pager",
-	"description": "Meet Edit Pager Chrome extension that allow you edit web page withing the chrome tab.",
+	"description": "Edit pager chrome extension that allow you edit web page withing the chrome tab.",
     "icons":{
         "128":"icon.png"
     },
@@ -11,5 +11,10 @@
         "default_popup": "js/index.html",
         "default_icon": "icon.png"
     },
-    "permissions": []
+    "permissions": [
+        "activeTab"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
 }

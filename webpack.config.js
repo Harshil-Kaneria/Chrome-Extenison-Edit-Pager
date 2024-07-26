@@ -34,7 +34,9 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "manifest.json", to: "../manifest.json" },
-                { from: "icon.png", to: "../icon.png" }
+                { from: "icon.png", to: "../icon.png" },
+                { from: "background.js", to: "../background.js" },
+                { from: "content.js", to: "../content.js" }
             ],
         }),
         ...getHtmlPlugins(["index"]),
@@ -52,7 +54,7 @@ function getHtmlPlugins(chunks) {
     return chunks.map(
         (chunk) =>
             new HTMLPlugin({
-                title: "Time Calculator V2",
+                title: "Edit Pager",
                 filename: `${chunk}.html`,
                 chunks: [chunk],
             })
