@@ -1,8 +1,10 @@
 function activateEditing() {
+  document.body.setAttribute('spellcheck', false);
   document.designMode = "on";
 }
 
 function deactivateEditing() {
+  document.body.setAttribute('spellcheck', false);
   document.designMode = "off";
 }
 
