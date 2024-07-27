@@ -1,2 +1,13 @@
-document.body.style.backgroundColor = 'lightblue';
-console.log('Injected JS code is running!');
+function getTabId() { ... }
+function getUserColor() { ... }
+
+function changeBackgroundColor() {
+  document.body.style.backgroundColor = getUserColor();
+}
+
+chrome.scripting
+    .executeScript({
+      target : {tabId : getTabId()},
+      func : changeBackgroundColor,
+    })
+    .then(() => console.log("injected a function"));

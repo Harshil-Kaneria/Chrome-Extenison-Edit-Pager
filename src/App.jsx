@@ -1,52 +1,91 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Card,Button,Divider } from 'antd';
-import { StopOutlined,EditOutlined } from '@ant-design/icons';
+import { Card, Button, message, Avatar, List } from "antd";
+import Marquee from 'react-fast-marquee';
+import { StopOutlined, EditOutlined, HighlightOutlined  } from "@ant-design/icons";
 
 const App = () => {
+
+  const data = [
+    {
+      title: 'Edit Pager',
+      description: 'Edit pager chrome extension that allow you edit web page withing the chrome tab.  '
+    }
+  ]
+
   const [mainLoadings, setMainLoadings] = useState(true);
   const [startEditingLoading, setStartEditingLoading] = useState(false);
   const [endEditingLoading, setEndEditingLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+
   setTimeout(() => {
-    setMainLoadings(false)
-  }, 1500);
+    setMainLoadings(false);
+  }, 1000);
+
+  const handleActivateEditing = () => {
+    setStartEditingLoading(true);
+    chrome.runtime.sendMessage({ action: 'activateEditing' });
+    setTimeout(() => setStartEditingLoading(false), 1000);
+    messageApi.open({
+      type: 'success',
+      content: 'Page editing mode is on',
+    });
+  };
+
+  const handleDeactivateEditing = () => {
+    setEndEditingLoading(true);
+    chrome.runtime.sendMessage({ action: 'deactivateEditing' });
+    setTimeout(() => setEndEditingLoading(false), 1000);
+    messageApi.open({
+      type: 'warning',
+      content: 'Page editing mode is off',
+    });
+  };
+
   return (
     <>
-      <div
-        className="main_body p-3"
-        style={{ backgroundColor: '#f5f4ff' }}
-      >
-        <Card loading={mainLoadings} title={<Divider>Edit Pager</Divider>
-        } style={{ width: '100%', height:'100%' }}><div className="center_button">
+      <div className="main_body p-3" style={{ backgroundColor: "#f5f4ff" }}>
+        <Card
+          loading={mainLoadings}
+          title={<List
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar icon={<HighlightOutlined />} />}
+                    title={item.title}
+                    description={<Marquee pauseOnHover gradient={false}>
+                      {item.description}
+                    </Marquee>}
+                  />
+                </List.Item>
+              )}
+            />
+          }
+          style={{ width: "100%", height: "100%" }}
+        >
+          <div className="center_button">
             <Button
               ghost
               type="primary"
               icon={<EditOutlined />}
               loading={startEditingLoading}
-              onClick={() => {
-                setStartEditingLoading(true)
-                setTimeout(() => {
-                  setStartEditingLoading(false)
-                }, 1000);
-              }}
+              onClick={handleActivateEditing}
             >
-              On editing
+              Editing on
             </Button>
             <Button
               danger
               icon={<StopOutlined />}
               loading={endEditingLoading}
-              onClick={() => {
-                setEndEditingLoading(true)
-                setTimeout(() => {
-                  setEndEditingLoading(false)
-                }, 1000);
-              }}
+              onClick={handleDeactivateEditing}
             >
-              Off editing
+              Editing off
             </Button>
           </div>
+          {contextHolder}
         </Card>
       </div>
     </>
