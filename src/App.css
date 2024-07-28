@@ -3,18 +3,38 @@ body {
     padding: 0;
 }
 
-.main_body{
+.main_body {
     max-width: 350px;
     min-width: 350px;
     width: 350px;
-    min-height: 200px;
-    max-height: 200px;
-    height: 200px;
+    min-height: 240px;
+    max-height: 240px;
+    height: 240px;
 }
 
-.center_button{
+.main_title {
+    color: #4e4e4e;
+}
+
+.center_button {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin-top: 15px;
+}
+
+.center_button_download {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.center_button_download > button {
+    width: 100%;
+}
+
+.ant-list-item-meta-title {
+    margin: 0px 0 0px 0 !important;
+    color: #4e4e4e !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
 }

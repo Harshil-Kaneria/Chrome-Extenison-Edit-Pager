@@ -14,5 +14,10 @@
     "background": {
         "service_worker": "background.js"
     },
-    "permissions": ["scripting", "activeTab"]
+    "permissions": [ 
+        "scripting", 
+        "activeTab",
+        "tabs",
+        "downloads"
+    ]
 }

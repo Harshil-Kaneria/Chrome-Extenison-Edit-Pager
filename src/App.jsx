@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card, Button, message, Avatar, List } from "antd";
 import Marquee from 'react-fast-marquee';
-import { StopOutlined, EditOutlined, HighlightOutlined  } from "@ant-design/icons";
+import { StopOutlined, EditTwoTone, HighlightOutlined, FileImageTwoTone  } from "@ant-design/icons";
 
 const App = () => {
 
@@ -17,6 +17,7 @@ const App = () => {
   const [mainLoadings, setMainLoadings] = useState(true);
   const [startEditingLoading, setStartEditingLoading] = useState(false);
   const [endEditingLoading, setEndEditingLoading] = useState(false);
+  const [screenshotLoading, setScreenshotLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   setTimeout(() => {
@@ -43,6 +44,24 @@ const App = () => {
     });
   };
 
+  const handleScreenshotDownload = () => {
+    setScreenshotLoading(true)
+    chrome.runtime.sendMessage({ action: 'capture' },(response) => {
+      if (response.success) {
+        messageApi.open({
+          type: 'success',
+          content: 'Screenshot captured and saved!',
+        });
+      } else {
+        messageApi.open({
+          type: 'error',
+          content: 'Failed to capture screenshot',
+        });
+      }
+      setScreenshotLoading(false)
+    });
+  }
+
   return (
     <>
       <div className="main_body p-3" style={{ backgroundColor: "#f5f4ff" }}>
@@ -54,11 +73,14 @@ const App = () => {
               renderItem={(item, index) => (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar icon={<HighlightOutlined />} />}
+                    avatar={<Avatar
+                      style={{
+                        backgroundColor: '#4e4e4e',
+                      }}
+                      icon={<HighlightOutlined />}
+                    />}
                     title={item.title}
-                    description={<Marquee pauseOnHover gradient={false}>
-                      {item.description}
-                    </Marquee>}
+                    description={<Marquee pauseOnHover gradient={false}>{item.description}</Marquee>}
                   />
                 </List.Item>
               )}
@@ -66,23 +88,31 @@ const App = () => {
           }
           style={{ width: "100%", height: "100%" }}
         >
+          <div className="center_button_download">
+            <Button
+              type="dashed"
+              icon={<FileImageTwoTone />}
+              loading={screenshotLoading}
+              onClick={handleScreenshotDownload}
+            >Screenshot
+            </Button>
+          </div>
+          <hr/>
           <div className="center_button">
             <Button
               ghost
               type="primary"
-              icon={<EditOutlined />}
+              icon={<EditTwoTone />}
               loading={startEditingLoading}
               onClick={handleActivateEditing}
-            >
-              Editing on
+            >Editing on
             </Button>
             <Button
               danger
               icon={<StopOutlined />}
               loading={endEditingLoading}
               onClick={handleDeactivateEditing}
-            >
-              Editing off
+            >Editing off
             </Button>
           </div>
           {contextHolder}
