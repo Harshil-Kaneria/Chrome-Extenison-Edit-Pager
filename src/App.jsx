@@ -9,20 +9,15 @@ const App = () => {
 
   const data = [
     {
-      title: 'Edit Pager',
-      description: 'Edit pager chrome extension that allow you edit web page withing the chrome tab.  '
+      title: 'Edit pager',
+      description: 'Edit web pages directly within the Chrome tab and capture screenshots effortlessly with this chrome extension.'
     }
   ]
 
-  const [mainLoadings, setMainLoadings] = useState(true);
   const [startEditingLoading, setStartEditingLoading] = useState(false);
   const [endEditingLoading, setEndEditingLoading] = useState(false);
   const [screenshotLoading, setScreenshotLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
-  setTimeout(() => {
-    setMainLoadings(false);
-  }, 1000);
 
   const handleActivateEditing = () => {
     setStartEditingLoading(true);
@@ -30,7 +25,7 @@ const App = () => {
     setTimeout(() => setStartEditingLoading(false), 1000);
     messageApi.open({
       type: 'success',
-      content: 'Page editing mode is on',
+      content: 'Page editing mode is now active.',
     });
   };
 
@@ -40,7 +35,7 @@ const App = () => {
     setTimeout(() => setEndEditingLoading(false), 1000);
     messageApi.open({
       type: 'warning',
-      content: 'Page editing mode is off',
+      content: 'Page editing mode has been disabled.',
     });
   };
 
@@ -50,12 +45,12 @@ const App = () => {
       if (response.success) {
         messageApi.open({
           type: 'success',
-          content: 'Screenshot captured and saved!',
+          content: 'Screenshot taken and saved successfully!',
         });
       } else {
         messageApi.open({
           type: 'error',
-          content: 'Failed to capture screenshot',
+          content: 'Failed to capture the screenshot.',
         });
       }
       setScreenshotLoading(false)
@@ -66,7 +61,6 @@ const App = () => {
     <>
       <div className="main_body p-3" style={{ backgroundColor: "#f5f4ff" }}>
         <Card
-          loading={mainLoadings}
           title={<List
               itemLayout="horizontal"
               dataSource={data}
