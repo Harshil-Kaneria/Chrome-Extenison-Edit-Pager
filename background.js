@@ -17,6 +17,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           target: { tabId: tabId },
           func: message.action==="activateEditing"?activateEditing:deactivateEditing,
         });
+        console.log('asd')
+        sendResponse({ success: true });
+        return;
       }
     });
   }else if(message.action === 'capture') {
@@ -25,14 +28,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const tabId = tabs[0].id;
         chrome.tabs.get(tabId, (tab) => {
           if (chrome.runtime.lastError || !tab) {
-            console.error("Error: Invalid tab ID or tab has been closed.");
-            sendResponse({ success: false, error: chrome.runtime.lastError ? chrome.runtime.lastError.message : "Tab not found" });
+            sendResponse({ success: false });
             return;
           }
           chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' }, (dataUrl) => {
             if (chrome.runtime.lastError) {
-              console.error(chrome.runtime.lastError);
-              sendResponse({ success: false, error: chrome.runtime.lastError.message });
+              sendResponse({ success: false });
               return;
             }
             const now = new Date().toISOString();
@@ -43,8 +44,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               saveAs: true
             }, (downloadId) => {
               if (chrome.runtime.lastError) {
-                console.error(chrome.runtime.lastError);
-                sendResponse({ success: false, error: chrome.runtime.lastError.message });
+                sendResponse({ success: false });
               } else {
                 sendResponse({ success: true });
               }
@@ -53,6 +53,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         });
       }
     });
-    return true;
   }
 });

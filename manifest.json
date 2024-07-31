@@ -1,10 +1,10 @@
 {
     "name": "Edit Pager",
-	"description": "Edit web pages directly within the Chrome tab and capture screenshots effortlessly with this chrome extension.",
+	"description": "Edit web pages directly within the Chrome tab and capture screenshots effortlessly with this extension.",
     "icons":{
         "128":"icon.png"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "manifest_version": 3,
     "action": {
         "default_title": "Edit Pager",
