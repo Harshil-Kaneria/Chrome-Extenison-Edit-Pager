@@ -14,36 +14,28 @@ const App = () => {
     }
   ]
 
-  const [startEditingLoading, setStartEditingLoading] = useState(false);
-  const [endEditingLoading, setEndEditingLoading] = useState(false);
   const [screenshotLoading, setScreenshotLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleActivateEditing = () => {
-    setStartEditingLoading(true);
     chrome.runtime.sendMessage({ action: 'activateEditing' },(response) => {
-      alert(`🚀 ~ chrome.runtime.sendMessage ~ response: ${response}`)
       if (response.success) {
         messageApi.open({
           type: 'success',
           content: 'Page editing mode is now active.',
         });
       }
-      setStartEditingLoading(false)
     });
   };
 
   const handleDeactivateEditing = () => {
-    setEndEditingLoading(true);
     chrome.runtime.sendMessage({ action: 'deactivateEditing' },(response) => {
-      alert(`🚀 ~ chrome.runtime.sendMessage ~ response: ${response}`)
       if (response.success) {
         messageApi.open({
           type: 'warning',
           content: 'Page editing mode has been disabled.',
         });
       }
-      setEndEditingLoading(false)
     });
   };
 
@@ -94,14 +86,12 @@ const App = () => {
               ghost
               type="primary"
               icon={<EditTwoTone />}
-              loading={startEditingLoading}
               onClick={handleActivateEditing}
             >Editing on
             </Button>
             <Button
               danger
               icon={<StopOutlined />}
-              loading={endEditingLoading}
               onClick={handleDeactivateEditing}
             >Editing off
             </Button>

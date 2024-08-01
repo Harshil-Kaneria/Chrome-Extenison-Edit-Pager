@@ -15,13 +15,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const tabId = tabs[0].id;
         chrome.scripting.executeScript({
           target: { tabId: tabId },
-          func: message.action==="activateEditing"?activateEditing:deactivateEditing,
+          func: message.action === "activateEditing" ? activateEditing : deactivateEditing,
+        }, () => {
+          sendResponse({ success: true });
         });
-        console.log('asd')
-        sendResponse({ success: true });
-        return;
+        return true;
+      } else {
+        sendResponse({ success: false, error: 'No active tab found.' });
       }
     });
+    return true;
   }else if(message.action === 'capture') {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
@@ -32,7 +35,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             return;
           }
           chrome.tabs.captureVisibleTab(tab.windowId, { format: 'png' }, (dataUrl) => {
-            if (chrome.runtime.lastError) {
+            if (chrome.runtime.lastError || !dataUrl) {
               sendResponse({ success: false });
               return;
             }
@@ -51,7 +54,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             });
           });
         });
+      } else {
+        sendResponse({ success: false });
       }
     });
+    return true;
   }
 });
